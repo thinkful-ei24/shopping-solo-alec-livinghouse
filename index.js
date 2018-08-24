@@ -177,6 +177,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   checkBoxSubmit();
   handleSearchTermSubmit();
+  handleUpdateSubmit();
 }
 
 // when the page loads, call `handleShoppingList`
