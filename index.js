@@ -17,6 +17,11 @@ function generateItemElement(item, itemIndex, template) {
     <li class="js-item-index-element" data-item-index="${itemIndex}">
       <span class="shopping-item js-shopping-item ${item.checked ? "shopping-item__checked" : ''}">${item.name}</span>
       <div class="shopping-item-controls">
+      <form id="update-form">
+          <label for="update-entry">Update</label>
+          <input type="text" name="update-entry" class="js-update-entry" placeholder="e.g., broccoli">
+          <button type="submit" class="update-button">Update</button>
+      </form>
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
         </button>
@@ -76,7 +81,6 @@ function handleNewItemSubmit() {
     event.preventDefault();
     console.log('`handleNewItemSubmit` ran');
     const newItemName = $('.js-shopping-list-entry').val();
-    $('.js-shopping-list-entry').val('');
     addItemToShoppingList(newItemName);
     renderShoppingList();
   });
@@ -87,7 +91,6 @@ function handleSearchTermSubmit(){
     STORE.searchTerm = '';
     event.preventDefault();
     const term = $(".js-search-entry").val();
-    console.log('this is the term: ' + term);
     STORE.searchTerm += term;
     console.log('this is the term added to the STORE: ' + STORE.searchTerm);
     renderShoppingList();
@@ -100,6 +103,10 @@ function toggleCheckedForListItem(itemIndex) {
   STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
+function updateForListItem(itemIndex, newName){
+  STORE.items[itemIndex].name = newName;
+}
+
 
 function getItemIndexFromElement(item) {
   const itemIndexString = $(item)
@@ -109,7 +116,7 @@ function getItemIndexFromElement(item) {
 }
 
 function handleItemCheckClicked() {
-  $('.js-shopping-list').on('click', `.js-item-toggle`, event => {
+  $('.js-shopping-list').on('click', '.js-item-toggle', event => {
     console.log('`handleItemCheckClicked` ran');
     const itemIndex = getItemIndexFromElement(event.currentTarget);
     toggleCheckedForListItem(itemIndex);
@@ -117,6 +124,21 @@ function handleItemCheckClicked() {
   });
 }
 
+
+function handleUpdateSubmit(){
+  $('#update-form').submit(function(event){
+      console.log('handle update fired');
+      event.preventDefault();
+      const newName = $('.js-update-entry').val();
+      const itemIndex = getItemIndexFromElement(event.currentTarget);
+      updateForListItem(itemIndex, newName);
+      renderShoppingList();
+  });
+}
+
+// function updateChange(itemIndex){
+//   STORE.items[itemIndex].name
+// }
 function checkBoxSubmit(){
   $('.show-only-unchecked').change(function(){
     STORE.boxChecked = !STORE.boxChecked;
