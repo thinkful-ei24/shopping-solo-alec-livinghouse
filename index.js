@@ -55,8 +55,13 @@ function renderShoppingList() {
   const filtered = STORE.items.filter(item=>item.name.includes(STORE.searchTerm) === true);
   const shoppingListItemsString = generateShoppingItemsString(filtered);
   $('.js-shopping-list').html(shoppingListItemsString);
-}
 
+} else if(STORE.boxChecked ===true && STORE.searchTerm.length > 0){
+  let filtered = STORE.items.filter(item=>item.name.includes(STORE.searchTerm) === true);
+  const filteredTwo = filtered.filter(item=>item.checked === false);
+  const shoppingListItemsString = generateShoppingItemsString(filteredTwo);
+  $('.js-shopping-list').html(shoppingListItemsString);
+  }
   // insert that HTML into the DOM
 }
 
