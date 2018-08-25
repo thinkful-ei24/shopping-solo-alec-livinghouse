@@ -41,33 +41,27 @@ function generateShoppingItemsString(shoppingList) {
   return items.join("");
 }
 
+const filterByKeyword = function(items){
+  console.log('this is what comes in to filtered by keyword ' + items);
+  if(STORE.boxChecked === true){
+     items = items.filter(item=>item.checked === false);
+  }
+  return items;
+}
+const filterByChecked = function(items){
+  console.log('this is what comes into filter by checked ' + items);
+  if(STORE.searchTerm.length > 0){
+    items = items.filter(item=>item.name.includes(STORE.searchTerm) === true);
+  }
+  return items;
+}
 
 function renderShoppingList() {
   // render the shopping list in the DOM
-  console.log('`renderShoppingList` ran');
-  if(STORE.boxChecked ===false && STORE.searchTerm.length === 0){
-  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+  const keyWordFiltered = filterByKeyword(STORE.items);
+  const checkFiltered = filterByChecked(keyWordFiltered);
+  const shoppingListItemsString = generateShoppingItemsString(checkFiltered);
   $('.js-shopping-list').html(shoppingListItemsString);
-
-} else if(STORE.boxChecked ===true && STORE.searchTerm.length === 0){
-  const filtered = STORE.items.filter(item=>item.checked === false);
-  console.log('this is filtered ' + filtered);
-  const shoppingListItemsString = generateShoppingItemsString(filtered);
-  $('.js-shopping-list').html(shoppingListItemsString);
-
-} else if(STORE.boxChecked ===false && STORE.searchTerm.length > 0){
-  console.log('the box is not checked and there is a seachTerm');
-  const filtered = STORE.items.filter(item=>item.name.includes(STORE.searchTerm) === true);
-  const shoppingListItemsString = generateShoppingItemsString(filtered);
-  $('.js-shopping-list').html(shoppingListItemsString);
-
-} else if(STORE.boxChecked ===true && STORE.searchTerm.length > 0){
-  let filtered = STORE.items.filter(item=>item.name.includes(STORE.searchTerm) === true);
-  const filteredTwo = filtered.filter(item=>item.checked === false);
-  const shoppingListItemsString = generateShoppingItemsString(filteredTwo);
-  $('.js-shopping-list').html(shoppingListItemsString);
-  }
-  // insert that HTML into the DOM
 }
 
 
